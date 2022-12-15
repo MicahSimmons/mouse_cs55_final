@@ -77,3 +77,25 @@ export async function getShip (id) {
     let ship = await fetcher(address);
     return ship;
 }
+
+export function getLevels (tmp) {
+    let ships = getData(DATATYPE.levels);
+    return ships;
+}
+
+export async function getLevel (id) {
+    const address = getEndpoint(DATATYPE.levels, id);
+    let ship = await fetcher(address);
+    return ship;
+}
+
+export function getScores (tmp) {
+    let ships = getData(DATATYPE.scores);
+    return ships;
+}
+
+export async function getScore (id) {
+    const address = getEndpoint(DATATYPE.scores, id);
+    let ship = await fetcher(address);
+    return ship;
+}

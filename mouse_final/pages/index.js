@@ -18,8 +18,8 @@ export default function Home() {
 
         <ul>
           <li><Link href="/ships">Spaceships</Link></li>
-          <li>High Scores</li>
-          <li>Levels</li>
+          <li><Link href="/scores">High Scores</Link></li>
+          <li><Link href="/levels">Levels</Link></li>
         </ul>
       </main>
 

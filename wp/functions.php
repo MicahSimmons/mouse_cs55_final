@@ -25,6 +25,48 @@ function mouse_api_routes () {
                         'callback' => 'get_players_list'
                        )
                      );
+
+  register_rest_route( 'mouse/v1', 
+                       'players/(?P<player_id>\d+)',
+                        array(
+                          'methods' => 'GET',
+                          'callback' => 'get_player_info'
+                        )
+                     );
+
+  register_rest_route(  'mouse/v1', 
+                        'levels',
+                        array(
+                            'methods' => 'GET',
+                            'callback' => 'get_levels_list'
+                        )
+  );
+
+  register_rest_route( 'mouse/v1', 
+                       'levels/(?P<level_id>\d+)',
+                        array(
+                          'methods' => 'GET',
+                          'callback' => 'get_level_info'
+                        )
+                     );
+
+
+  register_rest_route(  'mouse/v1', 
+                        'scores',
+                        array(
+                            'methods' => 'GET',
+                            'callback' => 'get_scores_list'
+                        )
+  );  
+
+  register_rest_route( 'mouse/v1', 
+                       'scores/(?P<game_id>\d+)',
+                        array(
+                            'methods' => 'GET',
+                            'callback' => 'get_score_info'
+                        )
+    );
+
 };
 
 function get_latest_posts_by_catagory($request) {
@@ -88,6 +130,7 @@ function add_custom_post_types () {
 
 function get_players_list () {
     global $wpdb;
+
     $query = 'SELECT id, post_type, post_title, post_status, '
            . '       GROUP_CONCAT(wp_postmeta.meta_key, ":", REPLACE(wp_postmeta.meta_value, ":", "")) AS acf_fields '
            . '       FROM wp_posts '
@@ -103,3 +146,96 @@ function get_players_list () {
     return $results;
 }
 
+function get_player_info ($request) {
+    global $wpdb;
+    $arg = $request['player_id'];
+
+    $query = 'SELECT id, post_type, post_title, post_status, post_content, '
+           . '       GROUP_CONCAT(wp_postmeta.meta_key, ":", REPLACE(wp_postmeta.meta_value, ":", "")) AS acf_fields '
+           . '       FROM wp_posts '
+           . 'INNER JOIN wp_postmeta '
+           . '        ON id=wp_postmeta.post_id '
+           . ' WHERE post_status="publish" '
+           . '   AND post_type="player" '
+           . '   AND id="' . $arg . '" '
+           . '   AND wp_postmeta.meta_key NOT LIKE "\_%" '
+           . 'GROUP BY wp_posts.id '
+           ;
+
+    $results = $wpdb->get_results($query);
+    return $results;
+}
+
+function get_levels_list () {
+    global $wpdb;
+    $query = 'SELECT id, post_type, post_title, post_status, '
+           . '       GROUP_CONCAT(wp_postmeta.meta_key, ":", REPLACE(wp_postmeta.meta_value, ":", "")) AS acf_fields '
+           . '       FROM wp_posts '
+           . 'INNER JOIN wp_postmeta '
+           . '        ON id=wp_postmeta.post_id '
+           . ' WHERE post_status="publish" '
+           . '   AND post_type="game_level" '
+           . '   AND wp_postmeta.meta_key NOT LIKE "\_%" '
+           . 'GROUP BY wp_posts.id '
+           ;
+
+    $results = $wpdb->get_results($query);
+    return $results;
+}
+
+function get_level_info ($request) {
+    global $wpdb;
+    $arg = $request['level_id'];
+
+    $query = 'SELECT id, post_type, post_title, post_status, post_content, '
+           . '       GROUP_CONCAT(wp_postmeta.meta_key, ":", REPLACE(wp_postmeta.meta_value, ":", "")) AS acf_fields '
+           . '       FROM wp_posts '
+           . 'INNER JOIN wp_postmeta '
+           . '        ON id=wp_postmeta.post_id '
+           . ' WHERE post_status="publish" '
+           . '   AND post_type="game_level" '
+           . '   AND id="' . $arg . '" '
+           . '   AND wp_postmeta.meta_key NOT LIKE "\_%" '
+           . 'GROUP BY wp_posts.id '
+           ;
+
+    $results = $wpdb->get_results($query);
+    return $results;
+}
+
+function get_scores_list () {
+    global $wpdb;
+    $query = 'SELECT id, post_type, post_title, post_status, '
+           . '       GROUP_CONCAT(wp_postmeta.meta_key, ":", REPLACE(wp_postmeta.meta_value, ":", "")) AS acf_fields '
+           . '       FROM wp_posts '
+           . 'INNER JOIN wp_postmeta '
+           . '        ON id=wp_postmeta.post_id '
+           . ' WHERE post_status="publish" '
+           . '   AND post_type="game_score" '
+           . '   AND wp_postmeta.meta_key NOT LIKE "\_%" '
+           . 'GROUP BY wp_posts.id '
+           ;
+
+    $results = $wpdb->get_results($query);
+    return $results;
+}
+
+function get_score_info ($request) {
+    global $wpdb;
+    $arg = $request['game_id'];
+
+    $query = 'SELECT id, post_type, post_title, post_status, post_content, '
+           . '       GROUP_CONCAT(wp_postmeta.meta_key, ":", REPLACE(wp_postmeta.meta_value, ":", "")) AS acf_fields '
+           . '       FROM wp_posts '
+           . 'INNER JOIN wp_postmeta '
+           . '        ON id=wp_postmeta.post_id '
+           . ' WHERE post_status="publish" '
+           . '   AND post_type="game_score" '
+           . '   AND id="' . $arg . '" '
+           . '   AND wp_postmeta.meta_key NOT LIKE "\_%" '
+           . 'GROUP BY wp_posts.id '
+           ;
+
+    $results = $wpdb->get_results($query);
+    return $results;
+}

@@ -2,7 +2,7 @@ import Head from 'next/head'
 import styles from '../../styles/Home.module.css'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { getScores } from "../../lib/cms_if"
+import { useScores } from "../../lib/cms_if"
 
 export async function getServerSideProps () {
   return {
@@ -12,7 +12,7 @@ export async function getServerSideProps () {
 }
 
 export default function Scores(props) {
-  const scores = getScores();
+  const scores = useScores();
   const router = useRouter();
   
   return (

@@ -2,7 +2,7 @@ import Head from 'next/head'
 import styles from '../../styles/Home.module.css'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { getShips } from "../../lib/cms_if"
+import { useShips } from "../../lib/cms_if"
 
 export async function getServerSideProps () {
   return {
@@ -12,7 +12,7 @@ export async function getServerSideProps () {
 }
 
 export default function Ships(props) {
-  const ships = getShips();
+  const ships = useShips();
   const router = useRouter();
   
   return (

@@ -60,15 +60,15 @@ async function fetcher (url) {
     return data;
 }
 
-function getData (datatype, id) {
+function useData (datatype, id) {
     const address = getEndpoint(datatype, id);
     const { data, error } = useSWR(address, fetcher);
 
     return data;
 }
 
-export function getShips (tmp) {
-    let ships = getData(DATATYPE.ships);
+export function useShips (tmp) {
+    let ships = useData(DATATYPE.ships);
     return ships;
 }
 
@@ -78,8 +78,8 @@ export async function getShip (id) {
     return ship;
 }
 
-export function getLevels (tmp) {
-    let ships = getData(DATATYPE.levels);
+export function useLevels (tmp) {
+    let ships = useData(DATATYPE.levels);
     return ships;
 }
 
@@ -89,8 +89,8 @@ export async function getLevel (id) {
     return ship;
 }
 
-export function getScores (tmp) {
-    let ships = getData(DATATYPE.scores);
+export function useScores (tmp) {
+    let ships = useData(DATATYPE.scores);
     return ships;
 }
 
